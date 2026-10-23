@@ -18,6 +18,7 @@ class BinaryHeap:
         """
         if (2*i + 1) < len(self.H):
             ## TODO
+            return 2*i + 1
             pass
         else:
             return -1
@@ -33,6 +34,7 @@ class BinaryHeap:
         """
         if (2*i + 2) < len(self.H):
             ## TODO
+            return 2*i + 2
             pass
         else:
             return -1
@@ -47,10 +49,10 @@ class BinaryHeap:
         j....index of the parent of node i, or -1 if n/a
         """
         if i > 0:
-            ## TODO 
-            pass
+            ## TODO
+            return (i-1)//2 
         else:
-            return 0
+            return -1
 
     def reheapUp(self, i):
         """
@@ -69,6 +71,9 @@ class BinaryHeap:
         print("reheaping  up from %d"%i)
         while ((c != 0) and (self.H[c] < self.H[p])):
             ## TODO
+            self.H[c], self.H[p] = self.H[p], self.H[c] #swapping child and parent values
+            c = p #child is now a parent
+            p = self.parent(c) #parent is re-established as child
             pass
 
     # restore the heap property going downward from node i
@@ -89,6 +94,14 @@ class BinaryHeap:
         r = self.rchild(i)
         while (l > 0 and (self.H[c] > self.H[l])) or (r > 0 and (self.H[c] > self.H[r])):
             ## TODO
+            smallest = l #just set as l
+            if r > 0 and self.H[r] < self.H[l]:
+                smallest = r #adjust if r
+            self.H[c], self.H[smallest] = self.H[smallest], self.H[c] #swap
+            c = smallest
+            l = self.lchild(c)
+            r = self.rchild(c)
+            
             pass
         
         
@@ -105,6 +118,8 @@ class BinaryHeap:
         m = self.H[0]
         if (len(self.H) > 1):
             ## TODO
+            self.H[0] = self.H.pop()
+            self.reheapDown(0)
             pass
 
         else:
@@ -119,6 +134,8 @@ class BinaryHeap:
 
         Returns nothing.
         """
+        self.H.append(x)
+        self.reheapUp(len(self.H) - 1) #reheaping everything
         pass
 
 def heapsort(a):
@@ -136,5 +153,11 @@ def heapsort(a):
     H = BinaryHeap()
     sorted_a = []
     ## TO DO
+
+    for x in a:
+        H.insert(x)
+        
+    while len(H.H) > 0:
+        sorted_a.append(H.deleteMin())
 
     return sorted_a
